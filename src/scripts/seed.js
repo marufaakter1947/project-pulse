@@ -32,12 +32,16 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
+import path from "path";
 
-import connectDB from "../lib/db";
-import User from "../models/User";
-import Project from "../models/Project";
+import connectDB from "../lib/db.js";
+import User from "../models/User.js";
+import Project from "../models/Project.js";
 
-dotenv.config();
+
+// dotenv.config();
+// dotenv.config({ path: "../../.env" });
+dotenv.config({ path: path.resolve(process.cwd(), ".env") })
 
 const seed = async () => {
   try {
@@ -110,6 +114,8 @@ const seed = async () => {
     ]);
 
     console.log("Seed data created successfully!");
+    console.log("SEED DB:", process.env.MONGODB_URI);
+
     process.exit(0);
   } catch (err) {
     console.error(err);

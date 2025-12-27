@@ -51,15 +51,15 @@ export default function Navbar() {
         {/* Right Side */}
         {!user ? (
           <div className="flex gap-4 font-semibold">
-            <Link href="/login" className="hover:text-blue-600">
+            <Link href="/login" className="bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700">
               Login
             </Link>
-            <Link
+            {/* <Link
               href="/register"
-              className="bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700"
+              className=""
             >
               Register
-            </Link>
+            </Link> */}
           </div>
         ) : (
           <div
