@@ -1,34 +1,20 @@
-import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import connectDB from "@/lib/db";
 import User from "@/models/User";
+import bcrypt from "bcryptjs";
+import { generateToken } from "@/lib/auth";
 
-export async function POST(req) {
-  await connectDB();
-  const { email, password } = await req.json();
+connectDB();
 
+export default async function handler(req, res) {
+  if (req.method !== "POST") return res.status(405).json({ message: "Method not allowed" });
+
+  const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (!user) {
-    return NextResponse.json(
-      { message: "Invalid credentials" },
-      { status: 401 }
-    );
-  }
+  if (!user) return res.status(401).json({ message: "Invalid credentials" });
 
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return NextResponse.json(
-      { message: "Invalid credentials" },
-      { status: 401 }
-    );
-  }
+  if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
 
-  const token = jwt.sign(
-    { id: user._id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: "1d" }
-  );
-
-  return NextResponse.json({ token, role: user.role });
+  const token = generateToken(user);
+  res.status(200).json({ token, user: { id: user._id, name: user.name, role: user.role } });
 }
