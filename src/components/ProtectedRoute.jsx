@@ -1,22 +1,33 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Loader from "./Loader";
 
 export default function ProtectedRoute({ children, role }) {
   const router = useRouter();
-  const [authorized, setAuthorized] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const userRole = localStorage.getItem("role");
+    const userData = localStorage.getItem("user");
 
-    if (!token || (role && userRole !== role)) {
-      router.push("/auth/login");
-    } else {
-      setAuthorized(true);
+    if (!token || !userData) {
+      router.replace("/auth/login");
+      return;
     }
+
+    const user = JSON.parse(userData);
+
+    if (role && user.role.toLowerCase() !== role.toLowerCase()) {
+      router.replace("/auth/login");
+      return;
+    }
+
+    setLoading(false);
   }, [router, role]);
 
-  if (!authorized) return <p>Loading...</p>;
+  if (loading) return <Loader />;
+
   return children;
 }

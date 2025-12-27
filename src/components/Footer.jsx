@@ -1,11 +1,3 @@
-// // components/Footer.jsx
-// export default function Footer() {
-//   return (
-//     <footer className="bg-gray-800 text-gray-200 p-4 text-center">
-//       <p>&copy; 2025 ProjectPulse. All rights reserved.</p>
-//     </footer>
-//   );
-// }
 import Link from "next/link";
 import { Mail } from "lucide-react";
 import { FaFacebook, FaInstagram, FaXTwitter } from "react-icons/fa6";

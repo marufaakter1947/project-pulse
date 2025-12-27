@@ -1,4 +1,6 @@
 // app/dashboard/admin/page.jsx
+"use client";
+
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
@@ -19,7 +21,7 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <ProtectedRoute role="Admin">
+    <ProtectedRoute role="admin">
       <Navbar />
       <div className="p-4">
         <h2 className="text-2xl font-bold mb-4">Admin Dashboard</h2>

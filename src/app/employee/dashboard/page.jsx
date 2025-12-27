@@ -1,3 +1,4 @@
+"use client";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";

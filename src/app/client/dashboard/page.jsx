@@ -1,3 +1,4 @@
+"use client";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
@@ -5,17 +6,29 @@ import { useEffect, useState } from "react";
 export default function ClientDashboard() {
   const [feedbacks, setFeedbacks] = useState([]);
 
-  useEffect(() => {
-    const fetchFeedbacks = async () => {
+useEffect(() => {
+  const fetchFeedbacks = async () => {
+    try {
       const token = localStorage.getItem("token");
-      const res = await fetch("/api/feedback", {
+      const res = await fetch("/api/client/feedback", {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Fetch failed:", text);
+        return;
+      }
+
       const data = await res.json();
       setFeedbacks(data);
-    };
-    fetchFeedbacks();
-  }, []);
+    } catch (error) {
+      console.error("Error fetching feedbacks:", error);
+    }
+  };
+
+  fetchFeedbacks();
+}, []);
 
   return (
     <ProtectedRoute role="Client">

@@ -1,27 +1,94 @@
+// // import connectDB from "@/lib/db";
+// // import User from "@/models/User";
+// // import bcrypt from "bcryptjs";
+// // import { generateToken } from "@/lib/auth";
+
+// // connectDB();
+
+// // export default async function handler(req, res) {
+// //   if (req.method !== "POST") return res.status(405).json({ message: "Method not allowed" });
+
+// //   const { email, password } = req.body;
+// //   const user = await User.findOne({ email });
+// //   if (!user) return res.status(401).json({ message: "Invalid credentials" });
+
+// //   const isMatch = await bcrypt.compare(password, user.password);
+// //   if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+
+// //   const token = generateToken(user);
+// //   res.status(200).json({ token, user: { id: user._id, name: user.name, role: user.role } });
+// // }
 // import connectDB from "@/lib/db";
 // import User from "@/models/User";
 // import bcrypt from "bcryptjs";
-// import { generateToken } from "@/lib/auth";
+// import jwt from "jsonwebtoken";
+// import { NextResponse } from "next/server";
 
-// connectDB();
+// export async function POST(req) {
+//   try {
+//     await connectDB();
 
-// export default async function handler(req, res) {
-//   if (req.method !== "POST") return res.status(405).json({ message: "Method not allowed" });
+//     const { email, password } = await req.json();
 
-//   const { email, password } = req.body;
-//   const user = await User.findOne({ email });
-//   if (!user) return res.status(401).json({ message: "Invalid credentials" });
+//     if (!email || !password) {
+//       return Response.json(
+//         { message: "Email and password required" },
+//         { status: 400 }
+//       );
+//     }
 
-//   const isMatch = await bcrypt.compare(password, user.password);
-//   if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return Response.json(
+//         { message: "Invalid credentials" },
+//         { status: 401 }
+//       );
+//     }
 
-//   const token = generateToken(user);
-//   res.status(200).json({ token, user: { id: user._id, name: user.name, role: user.role } });
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     if (!isMatch) {
+//       return Response.json(
+//         { message: "Invalid credentials" },
+//         { status: 401 }
+//       );
+//     }
+
+//     const token = jwt.sign(
+//       { id: user._id, role: user.role },
+//       process.env.JWT_SECRET,
+//       { expiresIn: "1d" }
+//     );
+
+//     return Response.json({
+//       token,
+//       user: {
+//         id: user._id,
+//         name: user.name,
+//         role: user.role,
+//       },
+//     });
+//     return NextResponse.json(
+//   { token, user },
+//   {
+//     status: 200,
+//     headers: {
+//       "Set-Cookie": `token=${token}; Path=/; HttpOnly; SameSite=Lax`,
+//     },
+//   }
+// );
+//   } catch (error) {
+//     console.error("LOGIN ERROR:", error);
+//     return Response.json(
+//       { message: "Server error" },
+//       { status: 500 }
+//     );
+//   }
 // }
 import connectDB from "@/lib/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
@@ -30,7 +97,7 @@ export async function POST(req) {
     const { email, password } = await req.json();
 
     if (!email || !password) {
-      return Response.json(
+      return NextResponse.json(
         { message: "Email and password required" },
         { status: 400 }
       );
@@ -38,7 +105,7 @@ export async function POST(req) {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return Response.json(
+      return NextResponse.json(
         { message: "Invalid credentials" },
         { status: 401 }
       );
@@ -46,7 +113,7 @@ export async function POST(req) {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return Response.json(
+      return NextResponse.json(
         { message: "Invalid credentials" },
         { status: 401 }
       );
@@ -58,7 +125,7 @@ export async function POST(req) {
       { expiresIn: "1d" }
     );
 
-    return Response.json({
+    const response = NextResponse.json({
       token,
       user: {
         id: user._id,
@@ -66,9 +133,18 @@ export async function POST(req) {
         role: user.role,
       },
     });
+
+    // ✅ cookie set (middleware এর জন্য)
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     console.error("LOGIN ERROR:", error);
-    return Response.json(
+    return NextResponse.json(
       { message: "Server error" },
       { status: 500 }
     );

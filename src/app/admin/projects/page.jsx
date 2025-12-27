@@ -1,4 +1,5 @@
 // api/admin/projects/route.js
+"use client";
 import connectDB from "@/lib/db";
 import Project from "@/models/Project";
 import CheckIn from "@/models/CheckIn";
