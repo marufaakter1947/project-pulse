@@ -1,49 +1,36 @@
 "use client";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import Navbar from "@/components/Navbar";
-import { useEffect, useState } from "react";
 
 export default function ClientDashboard() {
-  const [feedbacks, setFeedbacks] = useState([]);
-
-useEffect(() => {
-  const fetchFeedbacks = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("/api/client/feedback", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        console.error("Fetch failed:", text);
-        return;
-      }
-
-      const data = await res.json();
-      setFeedbacks(data);
-    } catch (error) {
-      console.error("Error fetching feedbacks:", error);
-    }
-  };
-
-  fetchFeedbacks();
-}, []);
+  const user =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("user"))
+      : null;
 
   return (
-    <ProtectedRoute role="Client">
-      <Navbar />
-      <div className="p-4">
-        <h2 className="text-2xl font-bold mb-4">Client Dashboard</h2>
-        {feedbacks.map((f) => (
-          <div key={f._id} className="p-4 border rounded mb-2">
-            <p>Project: {f.project}</p>
-            <p>Satisfaction: {f.satisfaction}</p>
-            <p>Communication: {f.communication}</p>
-            <p>Flagged: {f.flagged ? "Yes" : "No"}</p>
-          </div>
-        ))}
+    <div>
+      <h1 className="text-3xl font-bold mb-2">
+        Welcome, {user?.name}
+      </h1>
+      <p className="text-gray-600 mb-6">
+        Here is an overview of your projects and feedback.
+      </p>
+
+      <div className="grid grid-cols-3 gap-6">
+        <div className="bg-white p-5 rounded shadow">
+          <h3 className="font-semibold">Assigned Projects</h3>
+          <p className="text-2xl mt-2">5</p>
+        </div>
+
+        <div className="bg-white p-5 rounded shadow">
+          <h3 className="font-semibold">Project Health</h3>
+          <p className="text-2xl mt-2 text-green-600">Good</p>
+        </div>
+
+        <div className="bg-white p-5 rounded shadow">
+          <h3 className="font-semibold">Last Feedback</h3>
+          <p className="text-sm mt-2">2 days ago</p>
+        </div>
       </div>
-    </ProtectedRoute>
+    </div>
   );
 }
