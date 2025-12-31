@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Mail } from "lucide-react";
 import { FaFacebook, FaInstagram, FaXTwitter } from "react-icons/fa6";
-import logo from "../assets/images/logo-white-CyDn9rGY.png";
+// import logo from "../assets/images/logo-white-CyDn9rGY.png";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -12,7 +12,7 @@ export default function Footer() {
 
         {/* Brand */}
         <div className="flex flex-col items-center md:items-start">
-          <img src={logo.src} className="w-12 h-12 mb-2" alt="ProjectPulse" />
+         <img src="/images/logo-white-CyDn9rGY.png" className="w-9 h-9" alt="logo" />
           <h3 className="text-lg font-bold">ProjectPulse</h3>
 
           <ul className="space-y-2 mt-4">

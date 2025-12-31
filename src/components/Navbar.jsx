@@ -2,13 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import logo from "../assets/images/logo-white-CyDn9rGY.png";
-import avatarImg from "../assets/images/default-avatar.jpg";
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
-   const [mounted, setMounted] = useState(false); 
+  const [mounted, setMounted] = useState(false); 
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -18,7 +16,7 @@ export default function Navbar() {
     } else {
       setUser(null);
     }
-     setMounted(true);
+    setMounted(true);
   }, []);
 
   const handleLogout = () => {
@@ -29,22 +27,22 @@ export default function Navbar() {
     window.location.href = "/";
   };
 
- const roleRoutes = {
-  admin: "/admin/dashboard",
-  employee: "/employee/dashboard",
-  client: "/client/dashboard",
-};
+  const roleRoutes = {
+    admin: "/admin/dashboard",
+    employee: "/employee/dashboard",
+    client: "/client/dashboard",
+  };
 
-const dashboardRoute = user?.role
-  ? roleRoutes[user.role.toLowerCase()]
-  : "/";
+  const dashboardRoute = user?.role
+    ? roleRoutes[user.role.toLowerCase()]
+    : "/";
 
   return (
     <nav className="fixed top-0 inset-x-0 bg-white shadow z-50">
       <div className="mx-6 flex items-center justify-between h-16">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <img src={logo.src} className="w-9 h-9" alt="logo" />
+          <img src="/images/logo-white-CyDn9rGY.png" className="w-9 h-9" alt="logo" />
           <span className="font-bold text-xl text-blue-600">ProjectPulse</span>
         </Link>
 
@@ -68,7 +66,7 @@ const dashboardRoute = user?.role
         ) : (
           <div className="relative">
             <img
-              src={user.avatar || avatarImg.src}
+              src={user.avatar || "/images/default-avatar.jpg"}
               className="w-9 h-9 rounded-full cursor-pointer"
               alt="avatar"
               onClick={() => setOpen(!open)}
