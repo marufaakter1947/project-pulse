@@ -26,7 +26,7 @@ export default function Navbar() {
     localStorage.removeItem("user");
     setUser(null);
     setOpen(false);
-    window.location.href = "/login";
+    window.location.href = "/";
   };
 
  const roleRoutes = {

@@ -1,36 +1,29 @@
 "use client";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import Navbar from "@/components/Navbar";
-import { useEffect, useState } from "react";
 
 export default function EmployeeDashboard() {
-  const [checkIns, setCheckIns] = useState([]);
-
-  useEffect(() => {
-    const fetchCheckIns = async () => {
-      const token = localStorage.getItem("token");
-      const res = await fetch("/api/checkins", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      setCheckIns(data);
-    };
-    fetchCheckIns();
-  }, []);
-
   return (
-    <ProtectedRoute role="Employee">
-      <Navbar />
-      <div className="p-4">
-        <h2 className="text-2xl font-bold mb-4">Employee Dashboard</h2>
-        {checkIns.map((c) => (
-          <div key={c._id} className="p-4 border rounded mb-2">
-            <p>Project: {c.project}</p>
-            <p>Confidence: {c.confidence}</p>
-            <p>Completion: {c.completion}%</p>
-          </div>
-        ))}
+    <div>
+      <h1 className="text-3xl font-bold mb-1">
+        Welcome back
+      </h1>
+      <p className="text-gray-600 mb-6">
+        Here is your employee dashboard overview
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card title="Assigned Projects" value="3" />
+        <Card title="Pending Check-ins" value="2" />
+        <Card title="Open Risks" value="1" />
       </div>
-    </ProtectedRoute>
+    </div>
+  );
+}
+
+function Card({ title, value }) {
+  return (
+    <div className="bg-white p-6 rounded shadow">
+      <h3 className="text-gray-500 text-sm">{title}</h3>
+      <p className="text-3xl font-bold mt-2">{value}</p>
+    </div>
   );
 }
