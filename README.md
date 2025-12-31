@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+ProjectPulse
+1. Project Overview
 
-## Getting Started
+ProjectPulse is a comprehensive project monitoring platform for IT and software teams. It allows admins, employees, and clients to:
 
-First, run the development server:
+Track project progress
 
-```bash
+Submit and review weekly check-ins
+
+Collect structured client feedback
+
+Manage risks and monitor project health scores
+
+The platform centralizes all project data for better decision-making, communication, and transparency.
+
+2. Tech Stack Used
+
+Frontend: Next.js, React, Tailwind CSS
+
+Backend / API: Next.js API Routes
+
+Database: MongoDB
+
+Authentication: JWT (JSON Web Token)
+
+Deployment: Vercel
+
+3. Backend Choice
+
+The project uses Next.js API Routes to handle backend logic. All APIs (authentication, projects, check-ins, feedback, risks, and users) are implemented inside the app/api/ folder.
+
+Live Link:https://project-pulse-phi.vercel.app/
+
+4. Setup Instructions
+Prerequisites
+
+Node.js 
+
+npm
+
+MongoDB database 
+
+Steps
+
+Clone the repository:
+
+git clone https://github.com/marufaakter1947/project-pulse.git
+cd project-pulse
+
+
+Install dependencies:
+
+npm install
+
+
+Create a .env file in the root folder:
+
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+
+
+Run the development server:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Open http://localhost:3000
+ in your browser.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To build for production:
 
-## Learn More
+npm run build
+npm start
 
-To learn more about Next.js, take a look at the following resources:
+5. Demo Login Credentials
+Role	Email	Password
+Admin	admin@example.com
+	password123
+Employee	employee1@example.com
+	password123
+Employee	employee2@example.com
+	password123
+Client	client1@example.com
+	password123
+Client	client2@example.com
+	password123
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Use these credentials to test dashboards and functionality.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+6. Explanation of Health Score Logic
 
-## Deploy on Vercel
+ProjectPulse calculates a Health Score for each project to provide a quick overview of project status. The calculation uses:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Weekly Check-ins: Employees submit progress, blockers, and confidence levels.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Client Feedback: Satisfaction and communication ratings from clients.
+
+Risk Assessment: Identified risks and priority levels.
+
+Health Score formula (simplified):
+
+Health Score = (Average Progress + Average Client Satisfaction - Risk Penalty) / 3
+
+
+Average Progress: Employee updates (0–100%)
+
+Average Client Satisfaction: Client feedback (0–100%)
+
+Risk Penalty: Weighted score of active risks
+
+A higher Health Score indicates a healthier project with minimal risks and good progress.
